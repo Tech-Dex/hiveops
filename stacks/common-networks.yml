@@ -1,0 +1,4 @@
+﻿networks:
+  black-sea:
+    name: black-sea
+    driver: bridge

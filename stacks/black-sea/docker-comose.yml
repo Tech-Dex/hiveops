@@ -59,6 +59,28 @@
     networks:
       - black-sea
 
+  radarr-anime:
+    image: linuxserver/radarr:latest
+    container_name: radarr-anime
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/arr/radarr-anime:/config
+      - ${MEDIA_PATH}/arr/media/movies/animes:/movies
+      - ${MEDIA_PATH}/arr/torrents:/downloads
+    ports:
+      - "7879:7878"
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:7878" ]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+    networks:
+      - black-sea
+
   #  ███████╗ ██████╗ ███╗   ██╗ █████╗ ██████╗ ██████╗
   #  ██╔════╝██╔═══██╗████╗  ██║██╔══██╗██╔══██╗██╔══██╗
   #  ███████╗██║   ██║██╔██╗ ██║███████║██████╔╝██████╔╝
@@ -81,6 +103,28 @@
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8989"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+    networks:
+      - black-sea
+
+  sonarr-anime:
+    image: linuxserver/sonarr:latest
+    container_name: sonarr-anime
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/arr/sonarr-anime:/config
+      - ${MEDIA_PATH}/arr/media/tv/animes:/tv
+      - ${MEDIA_PATH}/arr/torrents:/downloads
+    ports:
+      - "8990:8989"
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8989" ]
       interval: 1m
       timeout: 10s
       retries: 3
@@ -190,11 +234,6 @@
     volumes:
       - ${CONFIG_PATH}/arr/jellyseerr:/app/config
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5055"]
-      interval: 1m
-      timeout: 10s
-      retries: 3
     networks:
       - black-sea
 

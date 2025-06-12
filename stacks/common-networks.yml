@@ -2,3 +2,7 @@
   black-sea:
     name: black-sea
     driver: bridge
+
+  nextcloud:
+    name: nextcloud
+    driver: bridge

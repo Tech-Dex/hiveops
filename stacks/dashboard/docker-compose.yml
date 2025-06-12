@@ -1,0 +1,26 @@
+﻿services:
+
+  #  ██╗  ██╗ ██████╗ ███╗   ███╗ █████╗ ██████╗ ██████╗
+  #  ██║  ██║██╔═══██╗████╗ ████║██╔══██╗██╔══██╗██╔══██╗
+  #  ███████║██║   ██║██╔████╔██║███████║██████╔╝██████╔╝
+  #  ██╔══██║██║   ██║██║╚██╔╝██║██╔══██║██╔══██╗██╔══██╗
+  #  ██║  ██║╚██████╔╝██║ ╚═╝ ██║██║  ██║██║  ██║██║  ██║
+  #  ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
+  homarr:
+    container_name: homarr
+    image: ghcr.io/homarr-labs/homarr:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${CONFIG_PATH}/homarr:/appdata
+    environment:
+      - SECRET_ENCRYPTION_KEY=${SECRET_ENCRYPTION_KEY} # 64 chars
+    ports:
+      - '7575:7575'
+    networks:
+      - black-sea
+
+networks:
+  black-sea:
+    external: true
+    name: black-sea

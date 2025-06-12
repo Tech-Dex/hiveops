@@ -24,3 +24,6 @@ networks:
   black-sea:
     external: true
     name: black-sea
+  analytics:
+    external: true
+    name: analytics

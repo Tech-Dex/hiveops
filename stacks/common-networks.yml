@@ -6,3 +6,7 @@
   nextcloud:
     name: nextcloud
     driver: bridge
+
+  analytics:
+    name: analytics
+    driver: bridge

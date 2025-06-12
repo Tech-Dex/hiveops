@@ -1,0 +1,24 @@
+﻿services:
+
+  #  ██████╗  █████╗ ███████╗██╗  ██╗
+  #  ██╔══██╗██╔══██╗██╔════╝██║  ██║
+  #  ██║  ██║███████║███████╗███████║
+  #  ██║  ██║██╔══██║╚════██║██╔══██║
+  #  ██████╔╝██║  ██║███████║██║  ██║██╗
+  #  ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝
+  dash:
+    image: mauricenino/dashdot:latest
+    container_name: dashdot
+    privileged: true
+    environment:
+      DASHDOT_ENABLE_CPU_TEMPS: 'true'
+    volumes:
+      - /:/mnt/host:ro
+    ports:
+      - '3001:3001'
+    restart: unless-stopped
+
+networks:
+  analytics:
+    external: true
+    name: analytics

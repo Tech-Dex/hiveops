@@ -19,6 +19,8 @@
     ports:
       - "8443:443"
     restart: unless-stopped
+    networks:
+      - nextcloud
 
   postgresql:
     image: postgres:latest

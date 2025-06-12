@@ -26,10 +26,15 @@ apps_pool/
 media_pool/
 ├── arr/
 │ └── media/
-│    ├── movies/
-│    │  └── animes/
-│    └── tv/ 
-│       └── animes/
+│ │  ├── movies/
+│ │  ├── movies-animes/
+│ │  ├── tv/ 
+│ │  └── tv-animes
+│ └── media/
+│ │   ├── movies/
+│ │   ├── movies-animes/
+│ │   ├── tv/
+│ │   └── tv-animes/
 ```
 
 ### Notes

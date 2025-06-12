@@ -68,7 +68,7 @@
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/arr/radarr-anime:/config
-      - ${MEDIA_PATH}/arr/media/movies/animes:/movies
+      - ${MEDIA_PATH}/arr/media/movies-animes:/movies
       - ${MEDIA_PATH}/arr/torrents:/downloads
     ports:
       - "7879:7878"
@@ -118,7 +118,7 @@
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/arr/sonarr-anime:/config
-      - ${MEDIA_PATH}/arr/media/tv/animes:/tv
+      - ${MEDIA_PATH}/arr/media/tv-animes:/tv
       - ${MEDIA_PATH}/arr/torrents:/downloads
     ports:
       - "8990:8989"
@@ -168,8 +168,8 @@
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/arr/bazarr-anime:/config
-      - ${MEDIA_PATH}/arr/media/movies/animes:/movies
-      - ${MEDIA_PATH}/arr/media/tv/animes:/tv
+      - ${MEDIA_PATH}/arr/media/movies-animes:/movies
+      - ${MEDIA_PATH}/arr/media/tv-animes:/tv
     ports:
       - "6768:6767"
     restart: unless-stopped
@@ -224,6 +224,8 @@
       - ${CONFIG_PATH}/arr/jellyfin:/config
       - ${MEDIA_PATH}/arr/media/movies:/movies
       - ${MEDIA_PATH}/arr/media/tv:/tvshows
+      - ${MEDIA_PATH}/arr/media/movies-animes:/movies-animes
+      - ${MEDIA_PATH}/arr/media/tv-animes:/tvshows-animes
     devices:
       - /dev/dri:/dev/dri
     ports:

@@ -159,6 +159,28 @@
     networks:
         - black-sea
 
+  bazarr-anime:
+    image: linuxserver/bazarr:latest
+    container_name: bazarr-anime
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/arr/bazarr-anime:/config
+      - ${MEDIA_PATH}/arr/media/movies/animes:/movies
+      - ${MEDIA_PATH}/arr/media/tv/animes:/tv
+    ports:
+      - "6768:6767"
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:6767" ]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+    networks:
+      - black-sea
+
   #  ██████╗ ██████╗  ██████╗ ██╗    ██╗██╗      █████╗ ██████╗ ██████╗
   #  ██╔══██╗██╔══██╗██╔═══██╗██║    ██║██║     ██╔══██╗██╔══██╗██╔══██╗
   #  ██████╔╝██████╔╝██║   ██║██║ █╗ ██║██║     ███████║██████╔╝██████╔╝

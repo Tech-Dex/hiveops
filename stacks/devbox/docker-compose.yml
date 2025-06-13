@@ -1,0 +1,27 @@
+﻿services:
+
+  #  ██████╗ ███████╗██████╗ ██╗ █████╗ ███╗   ██╗
+  #  ██╔══██╗██╔════╝██╔══██╗██║██╔══██╗████╗  ██║
+  #  ██║  ██║█████╗  ██████╔╝██║███████║██╔██╗ ██║
+  #  ██║  ██║██╔══╝  ██╔══██╗██║██╔══██║██║╚██╗██║
+  #  ██████╔╝███████╗██████╔╝██║██║  ██║██║ ╚████║
+  #  ╚═════╝ ╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
+  debian:
+    image: debian:bookworm
+    container_name: debian-devbox
+    ports:
+      - "2222:22"
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ${HOME_PATH}/remote-dev:/root/data
+    command: >
+      bash -c "
+        apt update &&
+        apt install -y openssh-server sudo &&
+        mkdir -p /var/run/sshd &&
+        echo 'root:root' | chpasswd &&
+        sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config &&
+        sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config &&
+        /usr/sbin/sshd -D
+      "

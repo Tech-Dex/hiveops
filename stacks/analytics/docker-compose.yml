@@ -18,6 +18,55 @@
       - '3001:3001'
     restart: unless-stopped
 
+  #  ██╗███╗   ██╗███████╗██╗     ██╗   ██╗██╗  ██╗██████╗ ██████╗
+  #  ██║████╗  ██║██╔════╝██║     ██║   ██║╚██╗██╔╝██╔══██╗██╔══██╗
+  #  ██║██╔██╗ ██║█████╗  ██║     ██║   ██║ ╚███╔╝ ██║  ██║██████╔╝
+  #  ██║██║╚██╗██║██╔══╝  ██║     ██║   ██║ ██╔██╗ ██║  ██║██╔══██╗
+  #  ██║██║ ╚████║██║     ███████╗╚██████╔╝██╔╝ ██╗██████╔╝██████╔╝
+  #  ╚═╝╚═╝  ╚═══╝╚═╝     ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═════╝
+  influxdb:
+    image: influxdb:2.7-alpine
+    container_name: influxdb
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUXDB_USERNAME}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUXDB_OPN_BUCKET}
+      - DOCKER_INFLUXDB_INIT_RETENTION=30d
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_ADMIN_TOKEN}
+    volumes:
+      - ${CONFIG_PATH}/influxdb:/var/lib/influxdb2
+    ports:
+      - "8086:8086"
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8086/health" ]
+    networks:
+      - analytics
+
+  #   ██████╗ ██████╗  █████╗ ███████╗ █████╗ ███╗   ██╗ █████╗
+  #  ██╔════╝ ██╔══██╗██╔══██╗██╔════╝██╔══██╗████╗  ██║██╔══██╗
+  #  ██║  ███╗██████╔╝███████║█████╗  ███████║██╔██╗ ██║███████║
+  #  ██║   ██║██╔══██╗██╔══██║██╔══╝  ██╔══██║██║╚██╗██║██╔══██║
+  #  ╚██████╔╝██║  ██║██║  ██║██║     ██║  ██║██║ ╚████║██║  ██║
+  #   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "8087:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+    volumes:
+      - ${CONFIG_PATH}/grafana:/var/lib/grafana
+    restart: unless-stopped
+    depends_on:
+      - influxdb
+    networks:
+      - analytics
+
 networks:
   analytics:
     external: true

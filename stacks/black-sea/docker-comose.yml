@@ -17,7 +17,7 @@
       - TORRENTING_PORT=6881
     volumes:
       - ${CONFIG_PATH}/arr/qbittorrent:/config
-      - ${MEDIA_PATH}/arr/torrents:/downloads
+      - ${MEDIA_PATH}/arr:/arr
     ports:
       - "8080:8080"
       - "6881:6881"
@@ -46,8 +46,7 @@
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/arr/radarr:/config
-      - ${MEDIA_PATH}/arr/media/movies:/movies
-      - ${MEDIA_PATH}/arr/torrents:/downloads
+      - ${MEDIA_PATH}/arr:/arr
     ports:
       - "7878:7878"
     restart: unless-stopped
@@ -68,8 +67,7 @@
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/arr/radarr-anime:/config
-      - ${MEDIA_PATH}/arr/media/movies-animes:/movies
-      - ${MEDIA_PATH}/arr/torrents:/downloads
+      - ${MEDIA_PATH}/arr:/arr
     ports:
       - "7879:7878"
     restart: unless-stopped
@@ -96,8 +94,7 @@
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/arr/sonarr:/config
-      - ${MEDIA_PATH}/arr/media/tv:/tv
-      - ${MEDIA_PATH}/arr/torrents:/downloads
+      - ${MEDIA_PATH}/arr:/arr
     ports:
       - "8989:8989"
     restart: unless-stopped
@@ -118,8 +115,7 @@
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/arr/sonarr-anime:/config
-      - ${MEDIA_PATH}/arr/media/tv-animes:/tv
-      - ${MEDIA_PATH}/arr/torrents:/downloads
+      - ${MEDIA_PATH}/arr:/arr
     ports:
       - "8990:8989"
     restart: unless-stopped

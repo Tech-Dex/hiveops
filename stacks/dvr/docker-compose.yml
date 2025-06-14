@@ -1,0 +1,32 @@
+﻿services:
+
+  #  ██╗███████╗██████╗ ██╗   ██╗
+  #  ██║██╔════╝██╔══██╗╚██╗ ██╔╝
+  #  ██║███████╗██████╔╝ ╚████╔╝
+  #  ██║╚════██║██╔═══╝   ╚██╔╝
+  #  ██║███████║██║        ██║
+  #  ╚═╝╚══════╝╚═╝        ╚═╝
+  ispy:
+    image: mekayelanik/ispyagentdvr:latest
+    container_name: ispy
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - AGENTDVR_WEBUI_PORT=8090
+    volumes:
+      - ${CONFIG_PATH}/ispy-dvr:/AgentDVR/Media/XML
+      - ${MEDIA_PATH}/ispy-dvr:/AgentDVR/Media/WebServerRoot/Media
+      - ${CONFIG_PATH}/ispy-dvr/commands:/AgentDVR/Commands
+    ports:
+      - "8090:8090"
+      - "3478:3478/udp"
+      - "50000-50100:50000-50100/udp"
+    restart: unless-stopped
+    networks:
+      - dvr
+
+networks:
+  dvr:
+    external: true
+    name: dvr

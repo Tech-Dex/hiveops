@@ -19,6 +19,7 @@
       - '7575:7575'
     networks:
       - black-sea
+      - proxy
 
 networks:
   black-sea:
@@ -27,3 +28,6 @@ networks:
   analytics:
     external: true
     name: analytics
+  proxy:
+    external: true
+    name: proxy

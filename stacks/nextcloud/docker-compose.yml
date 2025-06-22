@@ -21,6 +21,7 @@
     restart: unless-stopped
     networks:
       - nextcloud
+      - proxy
 
   postgresql:
     image: postgres:latest
@@ -41,3 +42,7 @@ networks:
   nextcloud:
     external: true
     name: nextcloud
+  proxy:
+    external: true
+    name: proxy
+

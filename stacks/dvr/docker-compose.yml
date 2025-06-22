@@ -25,8 +25,12 @@
     restart: unless-stopped
     networks:
       - dvr
+      - proxy
 
 networks:
   dvr:
     external: true
     name: dvr
+  proxy:
+    external: true
+    name: proxy

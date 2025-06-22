@@ -19,6 +19,7 @@
     restart: unless-stopped
     networks:
       - analytics
+      - proxy
 
   #  ██╗███╗   ██╗███████╗██╗     ██╗   ██╗██╗  ██╗██████╗ ██████╗
   #  ██║████╗  ██║██╔════╝██║     ██║   ██║╚██╗██╔╝██╔══██╗██╔══██╗
@@ -46,6 +47,7 @@
       test: [ "CMD", "curl", "-f", "http://localhost:8086/health" ]
     networks:
       - analytics
+      - proxy
 
   #   ██████╗ ██████╗  █████╗ ███████╗ █████╗ ███╗   ██╗ █████╗
   #  ██╔════╝ ██╔══██╗██╔══██╗██╔════╝██╔══██╗████╗  ██║██╔══██╗
@@ -68,6 +70,7 @@
       - influxdb
     networks:
       - analytics
+      - proxy
 
   #  ██╗   ██╗██████╗ ████████╗██╗███╗   ███╗███████╗    ██╗  ██╗██╗   ██╗███╗   ███╗ █████╗
   #  ██║   ██║██╔══██╗╚══██╔══╝██║████╗ ████║██╔════╝    ██║ ██╔╝██║   ██║████╗ ████║██╔══██╗
@@ -88,6 +91,7 @@
       - black-sea
       - nextcloud
       - dvr
+      - proxy
 
   #  ███╗   ██╗████████╗███████╗██╗   ██╗
   #  ████╗  ██║╚══██╔══╝██╔════╝╚██╗ ██╔╝
@@ -120,6 +124,7 @@
       - black-sea
       - nextcloud
       - dvr
+      - proxy
 
 networks:
   analytics:
@@ -134,3 +139,7 @@ networks:
   dvr:
     external: true
     name: dvr
+  proxy:
+    external: true
+    name: proxy
+

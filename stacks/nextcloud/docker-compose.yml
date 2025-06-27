@@ -23,22 +23,6 @@
       - nextcloud
       - proxy
 
-  collabora:
-    image: collabora/code:latest
-    container_name: collabora
-    environment:
-      - domain=${NEXTCLOUD_DOMAIN}
-      - extra_params=--o:ssl.enable=false --o:storage.wopi.host[nextcloud]=true
-    ports:
-      - "9980:9980"
-    cap_add:
-      - MKNOD
-    restart: always
-    networks:
-      - nextcloud
-      - proxy
-
-
   postgresql:
     image: postgres:latest
     container_name: nextcloud-postgres
@@ -53,6 +37,27 @@
     restart: unless-stopped
     networks:
       - nextcloud
+
+  #   ██████╗ ███╗   ██╗██╗  ██╗   ██╗ ██████╗ ███████╗███████╗██╗ ██████╗███████╗
+  #  ██╔═══██╗████╗  ██║██║  ╚██╗ ██╔╝██╔═══██╗██╔════╝██╔════╝██║██╔════╝██╔════╝
+  #  ██║   ██║██╔██╗ ██║██║   ╚████╔╝ ██║   ██║█████╗  █████╗  ██║██║     █████╗
+  #  ██║   ██║██║╚██╗██║██║    ╚██╔╝  ██║   ██║██╔══╝  ██╔══╝  ██║██║     ██╔══╝
+  #  ╚██████╔╝██║ ╚████║███████╗██║   ╚██████╔╝██║     ██║     ██║╚██████╗███████╗
+  #   ╚═════╝ ╚═╝  ╚═══╝╚══════╝╚═╝    ╚═════╝ ╚═╝     ╚═╝     ╚═╝ ╚═════╝╚══════╝
+  onlyoffice:
+    image: onlyoffice/documentserver:latest
+    container_name: onlyoffice
+    restart: always
+    ports:
+      - "8888:80"
+    volumes:
+      - ${CONFIG_PATH}/onlyoffice/logs:/var/log/onlyoffice
+      - ${CONFIG_PATH}/onlyoffice/data:/var/www/onlyoffice/Data
+    environment:
+      - JWT_SECRET=${ONLYOFFICE_SECRET}
+    networks:
+      - nextcloud
+      - proxy
 
 networks:
   nextcloud:

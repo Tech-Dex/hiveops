@@ -90,7 +90,7 @@
       - analytics
       - black-sea
       - nextcloud
-      - dvr
+      - nvr
       - proxy
 
   #  ███╗   ██╗████████╗███████╗██╗   ██╗
@@ -106,9 +106,18 @@
       - serve
     environment:
       - TZ=${TZ}
+      - NTFY_BASE_URL=${NTFY_BASE_URL}
+      - NTFY_CACHE_FILE=/var/lib/ntfy/cache.db
+      - NTFY_AUTH_FILE=/var/lib/ntfy/auth.db
+      - NTFY_ATTACHMENT_CACHE_DIR=/var/lib/ntfy/attachments
+      - NTFY_UPSTREAM_BASE_URL=https://ntfy.sh
+      - NTFY_BEHIND_PROXY=true
+      - NTFY_AUTH_DEFAULT_ACCESS=deny-all
+      - NTFY_ENABLE_LOGIN=true
+
     user: "${PUID_NTFY}:${PGID_NTFY}"
     volumes:
-      - ${CACHE_PATH}ntfy:/var/cache/ntfy
+      - ${CACHE_PATH}/ntfy:/var/cache/ntfy
       - ${CONFIG_PATH}/ntfy:/etc/ntfy
     ports:
       - "8081:80"
@@ -123,7 +132,7 @@
       - analytics
       - black-sea
       - nextcloud
-      - dvr
+      - nvr
       - proxy
 
 networks:
@@ -136,9 +145,9 @@ networks:
   nextcloud:
     external: true
     name: nextcloud
-  dvr:
+  nvr:
     external: true
-    name: dvr
+    name: nvr
   proxy:
     external: true
     name: proxy

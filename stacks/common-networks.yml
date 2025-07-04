@@ -11,6 +11,6 @@
     name: analytics
     driver: bridge
 
-  dvr:
-    name: dvr
+  nvr:
+    name: nvr
     driver: bridge

@@ -14,3 +14,7 @@
   nvr:
     name: nvr
     driver: bridge
+
+  printer:
+    name: printer
+    driver: bridge

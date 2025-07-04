@@ -1,0 +1,38 @@
+﻿services:
+
+  #  ██████╗  █████╗ ███╗   ███╗██████╗ ██╗   ██╗███████╗████████╗██╗   ██╗██████╗ ██╗ ██████╗
+  #  ██╔══██╗██╔══██╗████╗ ████║██╔══██╗██║   ██║██╔════╝╚══██╔══╝██║   ██║██╔══██╗██║██╔═══██╗
+  #  ██████╔╝███████║██╔████╔██║██████╔╝██║   ██║███████╗   ██║   ██║   ██║██║  ██║██║██║   ██║
+  #  ██╔══██╗██╔══██║██║╚██╔╝██║██╔══██╗██║   ██║╚════██║   ██║   ██║   ██║██║  ██║██║██║   ██║
+  #  ██████╔╝██║  ██║██║ ╚═╝ ██║██████╔╝╚██████╔╝███████║   ██║   ╚██████╔╝██████╔╝██║╚██████╔╝
+  #  ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═════╝  ╚═════╝ ╚══════╝   ╚═╝    ╚═════╝ ╚═════╝ ╚═╝ ╚═════╝
+  bambustudio:
+    image: lscr.io/linuxserver/bambustudio:latest
+    container_name: bambustudio
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DARK_MODE=true
+    volumes:
+      - ${CONFIG_PATH}/bambustudio:/config
+    devices:
+      - /dev/dri:/dev/dri
+    ports:
+      - "5000:3000"
+      - "5001:3001"
+    restart: unless-stopped
+    networks:
+      - printer
+      - proxy
+
+
+networks:
+  printer:
+    external: true
+    name: printer
+  proxy:
+    external: true
+    name: proxy

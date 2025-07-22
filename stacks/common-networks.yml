@@ -18,3 +18,7 @@
   printer:
     name: printer
     driver: bridge
+
+  db_network:
+    name: db_network
+    driver: bridge

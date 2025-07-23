@@ -1,27 +1,37 @@
 ﻿services:
-
-  #  ██████╗ ███████╗██████╗ ██╗ █████╗ ███╗   ██╗
-  #  ██╔══██╗██╔════╝██╔══██╗██║██╔══██╗████╗  ██║
-  #  ██║  ██║█████╗  ██████╔╝██║███████║██╔██╗ ██║
-  #  ██║  ██║██╔══╝  ██╔══██╗██║██╔══██║██║╚██╗██║
-  #  ██████╔╝███████╗██████╔╝██║██║  ██║██║ ╚████║
-  #  ╚═════╝ ╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
-  debian:
-    image: debian:bookworm
-    container_name: debian-dev-container
+  dev-container:
+    image: ghcr.io/tech-dex/hiveops-dev-container:master
+    container_name: devcontainer
     ports:
+      # SSH access
       - "2222:22"
-    restart: unless-stopped
-    tty: true
+      # Common development ports - uncomment as needed
+#      - "3000:3000"   # React, Next.js default
+#      - "3001:3001"   # Alternative React port
+#      - "4200:4200"   # Angular default
+#      - "5000:5000"   # Flask, various frameworks
+#      - "5173:5173"   # Vite default
+#      - "8000:8000"   # Django, FastAPI
+#      - "8080:8080"   # Common web server port
+#      - "8081:8081"   # Alternative web server port
+#      - "9000:9000"   # Various development servers
     volumes:
-      - ${HOME_PATH}/remote-dev:/root/data
-    command: >
-      bash -c "
-        apt update &&
-        apt install -y openssh-server sudo &&
-        mkdir -p /var/run/sshd &&
-        echo 'root:root' | chpasswd &&
-        sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config &&
-        sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config &&
-        /usr/sbin/sshd -D
-      "
+      - ${WORKSPACE_PATH}/dev-container/workspace:/workspace
+      # This is for Docker socket access, allowing the container to manage Docker available on the TrueNAS host
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    environment:
+      - LANG=en_US.UTF-8
+      - LC_ALL=en_US.UTF-8
+      - TZ=${TZ}
+    networks:
+      - dev_network
+      - db_network
+
+networks:
+  dev_network:
+    external: true
+    name: dev_network
+  db_network:
+    external: true
+    name: db_network

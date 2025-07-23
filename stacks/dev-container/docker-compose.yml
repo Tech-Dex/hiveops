@@ -8,7 +8,7 @@
   #  ╚═════╝ ╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
   debian:
     image: debian:bookworm
-    container_name: debian-devbox
+    container_name: debian-dev-container
     ports:
       - "2222:22"
     restart: unless-stopped

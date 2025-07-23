@@ -1,7 +1,7 @@
 ﻿services:
   dev-container:
     image: ghcr.io/tech-dex/hiveops-dev-container:master
-    container_name: devcontainer
+    container_name: dev-container
     ports:
       # SSH access
       - "2222:22"

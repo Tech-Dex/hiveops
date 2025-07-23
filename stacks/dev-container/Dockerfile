@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/universal:latest
+FROM mcr.microsoft.com/devcontainers/universal:3.0.3
 
 # Install SSH server and other dependencies
 RUN apt-get update && \

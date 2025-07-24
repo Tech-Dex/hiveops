@@ -16,7 +16,14 @@
 #      - "8081:8081"   # Alternative web server port
 #      - "9000:9000"   # Various development servers
     volumes:
-      - ${WORKSPACE_PATH}/dev-container/workspace:/workspace
+      - ${WORKSPACE_PATH}/workspace:/workspace
+      # You must use this path to install the jetbrains IDE, edit in the IDE settings install configuration
+      - ${CONFIG_PATH}/dev-container/jetbrains:/jetbrains
+      - ${CONFIG_PATH}/dev-container/ssh:/root/.ssh
+      - ${CONFIG_PATH}/dev-container/openssh:/etc/ssh
+      - type: bind
+        source: ${CONFIG_PATH}/dev-container/bash-history
+        target: /root/.bash_history
       # This is for Docker socket access, allowing the container to manage Docker available on the TrueNAS host
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped

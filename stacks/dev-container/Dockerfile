@@ -76,6 +76,9 @@ EOF
 
 RUN chmod +x /entrypoint.sh
 
+# Set up bash history to append on exit. On container restart, the history will be preserved if bind mounted.
+RUN echo 'PROMPT_COMMAND="history -a;$PROMPT_COMMAND"' >> /root/.bashrc
+
 # Expose SSH port
 EXPOSE 22
 

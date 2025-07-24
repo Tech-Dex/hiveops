@@ -7,6 +7,7 @@ RUN apt-get update && \
     curl \
     wget \
     unzip \
+    tmux \
     && rm -rf /var/lib/apt/lists/*
 
 # Create SSH directory

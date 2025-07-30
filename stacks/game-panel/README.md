@@ -48,3 +48,31 @@ To configure a unique network for Wings, specify the following IPv4 and IPv6 set
 - **Subnet:** `fdd0:0:0:5::/64`
 - **Gateway:** `fdd0:0:0:5::1`
 
+## Directory Structure
+
+### Storage Overview
+
+- **apps_pool/**: SSD-backed storage, ideal for application configurations and fast-access data.
+- **secure_pool/**: HDD-backed storage with RAID1 redundancy, designed for secure backups and sensitive data.
+
+### 📦 Proposed Dataset Tree
+
+Organize your game panel files using the following structure for optimal performance and reliability:
+
+```sh
+mkdir -p apps_pool/configs/pterodactyl/panel
+mkdir -p apps_pool/configs/pterodactyl/wings
+mkdir -p secure_pool/pterodactyl/backup
+```
+
+```
+apps_pool/
+└── configs/
+    └── pterodactyl/
+        ├── panel/
+        └── wings/
+
+secure_pool/
+└── pterodactyl/
+    └── backup/
+```

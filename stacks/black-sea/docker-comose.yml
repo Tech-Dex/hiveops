@@ -177,8 +177,8 @@
       timeout: 10s
       retries: 3
     networks:
-        - black-sea
-        - proxy
+      - black-sea
+      - proxy
 
   bazarr-anime:
     image: linuxserver/bazarr:latest
@@ -282,6 +282,54 @@
     volumes:
       - ${CONFIG_PATH}/arr/jellyseerr:/app/config
     restart: unless-stopped
+    networks:
+      - black-sea
+      - proxy
+
+  #  ██╗     ██╗██████╗ ██████╗ ███████╗████████╗██████╗  █████╗ ███╗   ██╗███████╗██╗      █████╗ ████████╗███████╗
+  #  ██║     ██║██╔══██╗██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔══██╗████╗  ██║██╔════╝██║     ██╔══██╗╚══██╔══╝██╔════╝
+  #  ██║     ██║██████╔╝██████╔╝█████╗     ██║   ██████╔╝███████║██╔██╗ ██║███████╗██║     ███████║   ██║   █████╗
+  #  ██║     ██║██╔══██╗██╔══██╗██╔══╝     ██║   ██╔══██╗██╔══██║██║╚██╗██║╚════██║██║     ██╔══██║   ██║   ██╔══╝
+  #  ███████╗██║██████╔╝██║  ██║███████╗   ██║   ██║  ██║██║  ██║██║ ╚████║███████║███████╗██║  ██║   ██║   ███████╗
+  #  ╚══════╝╚═╝╚═════╝ ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝
+  libretranslate:
+    image: libretranslate/libretranslate:latest
+    container_name: libretranslate
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - LT_LOAD_ONLY=en,ro
+      - LT_PORT=5000
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/arr/libretranslate/db:/app/db
+      - ${CONFIG_PATH}/arr/libretranslate/local:/home/libretranslate/.local
+    ports:
+      - "5100:5000"
+    restart: unless-stopped
+    networks:
+      - black-sea
+      - proxy
+
+  #  ██╗     ██╗███╗   ██╗ ██████╗  █████╗ ██████╗ ██████╗
+  #  ██║     ██║████╗  ██║██╔════╝ ██╔══██╗██╔══██╗██╔══██╗
+  #  ██║     ██║██╔██╗ ██║██║  ███╗███████║██████╔╝██████╔╝
+  #  ██║     ██║██║╚██╗██║██║   ██║██╔══██║██╔══██╗██╔══██╗
+  #  ███████╗██║██║ ╚████║╚██████╔╝██║  ██║██║  ██║██║  ██║
+  #  ╚══════╝╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
+  lingarr:
+    image: lingarr/lingarr:latest
+    container_name: lingarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - ASPNETCORE_URLS=http://+:9876
+    ports:
+      - "9876:9876"
+    volumes:
+      - ${MEDIA_PATH}/arr:/arr
+      - ${CONFIG_PATH}/arr/lingarr:/app/config
     networks:
       - black-sea
       - proxy

@@ -334,6 +334,25 @@
       - black-sea
       - proxy
 
+#  ██████╗  █████╗ ████████╗████████╗ █████╗ ████████╗ █████╗ ██████╗ ██████╗
+#  ██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██╔══██╗╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗
+#  ██████╔╝███████║   ██║      ██║   ███████║   ██║   ███████║██████╔╝██████╔╝
+#  ██╔══██╗██╔══██║   ██║      ██║   ██╔══██║   ██║   ██╔══██║██╔══██╗██╔══██╗
+#  ██║  ██║██║  ██║   ██║      ██║   ██║  ██║   ██║   ██║  ██║██║  ██║██║  ██║
+#  ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
+  rattatarr:
+    image: ghcr.io/rattatarr/rattatarr:latest
+    container_name: rattatarr
+    ports:
+      - "9999:80"
+    volumes:
+      - ${CONFIG_PATH}/arr/rattatarr:/data
+    networks:
+      - black-sea
+      - proxy
+    environment:
+      RATTATARR_CORS_ALLOWED_ORIGINS: "https://rattatarr.15mp.duckdns.org"
+
 networks:
   black-sea:
     external: true

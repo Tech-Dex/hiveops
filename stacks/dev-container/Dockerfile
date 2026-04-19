@@ -1,7 +1,8 @@
 FROM mcr.microsoft.com/devcontainers/universal:3.0.3
 
 # Install SSH server and other dependencies
-RUN apt-get update && \
+RUN rm -f /etc/apt/sources.list.d/yarn.list /usr/share/keyrings/yarn.gpg && \
+    apt-get update && \
     apt-get install -y \
     openssh-server \
     curl \

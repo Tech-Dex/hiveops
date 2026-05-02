@@ -325,6 +325,7 @@
       - PUID=${PUID}
       - PGID=${PGID}
       - ASPNETCORE_URLS=http://+:9876
+      - DB_CONNECTION=mysql
       - DB_PORT=${LINGARR_DB_PORT}
       - DB_HOST=${LINGARR_DB_HOST}
       - DB_DATABASE=${LINGARR_DB_DATABASE}
@@ -354,6 +355,7 @@
       - PUID=${PUID}
       - PGID=${PGID}
       - ASPNETCORE_URLS=http://+:9876
+      - DB_CONNECTION=mysql
       - DB_PORT=${LINGARR_ANIME_DB_PORT}
       - DB_HOST=${LINGARR_ANIME_DB_HOST}
       - DB_DATABASE=${LINGARR_ANIME_DB_DATABASE}

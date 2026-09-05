@@ -1,0 +1,95 @@
+# SearXNG instance config — overrides the upstream defaults.
+# Full reference: https://docs.searxng.org/admin/settings/
+#
+# This file is bind-mounted at /etc/searxng/settings.yml. It must be
+# readable/writable by the container's `searxng` user (the entrypoint
+# chowns the mount when FORCE_OWNERSHIP=true, the default).
+#
+# `use_default_settings: true` => only the keys below change; everything
+# else (full engine list, headers, etc.) comes from the image defaults.
+use_default_settings: true
+
+general:
+  instance_name: "SearXNG"
+  # Do not expose the /stats timing + engine-error dashboard.
+  enable_metrics: false
+
+search:
+  # 0 None / 1 Moderate / 2 Strict
+  safe_search: 0
+  # Google-style suggestions in the search box.
+  autocomplete: "google"
+  autocomplete_min: 2
+  # Show a favicon next to each result (resolved + proxied by SearXNG).
+  favicon_resolver: "duckduckgo"
+  default_lang: "auto"
+  # Only serve the HTML UI. No json/csv/rss => no scriptable scraping surface.
+  formats:
+    - html
+
+server:
+  # base_url  <- SEARXNG_BASE_URL env var
+  # secret_key <- SEARXNG_SECRET env var
+  #
+  # Rate limiter / bot detection. OFF by default: this is a private
+  # VPN-only instance where every request arrives from the VPN gateway
+  # IP, so the limiter would false-positive real users.
+  # To enable: set `true`, keep valkey running, and tune limiter.toml.
+  limiter: false
+  public_instance: false
+  # Proxy image thumbnails through SearXNG so upstreams never see the client.
+  image_proxy: true
+  # POST keeps the query out of the URL, browser history and Referer.
+  # Trade-off: `?q=` deep links no longer auto-run a search.
+  method: "POST"
+  http_protocol_version: "1.1"
+
+valkey:
+  url: valkey://searxng-valkey:6379/0
+
+ui:
+  default_theme: simple
+  theme_args:
+    simple_style: auto
+  results_on_new_tab: true
+  # Keep the query out of the page <title> (browser history hygiene).
+  query_in_title: false
+
+# Freeze these so a crafted preferences cookie can't weaken the instance.
+preferences:
+  lock:
+    - autocomplete
+    - method
+    - image_proxy
+    - safesearch
+
+outgoing:
+  request_timeout: 5.0
+  max_request_timeout: 15.0
+  # --- Optional: route ALL engine queries through Tor -----------------
+  # Hides the server IP from search engines. Adds latency + more
+  # captchas. Requires a Tor SOCKS proxy reachable on the `searxng`
+  # network, e.g. add a service:
+  #   tor:
+  #     image: dperson/torproxy
+  #     container_name: searxng-tor
+  #     networks: [searxng]
+  # then uncomment:
+  # using_tor_proxy: true
+  # extra_proxy_timeout: 10
+  # proxies:
+  #   all://:
+  #     - socks5h://searxng-tor:9050
+  # ------------------------------------------------------------------
+
+# Merge-by-name over the default engine list: just re-rank Google first.
+engines:
+  - name: google
+    weight: 3
+
+# Merge-by-key over the default plugin set. Defaults already enable
+# calculator, unit_converter, hash, self_info, time_zone,
+# tracker_url_remover, hostnames and ahmia_filter.
+plugins:
+  searx.plugins.infinite_scroll.SXNGPlugin:
+    active: true

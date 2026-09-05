@@ -8,7 +8,30 @@
     networks:
       - db_network
 
+  vikunja:
+    image: vikunja/vikunja:latest
+    container_name: vikunja
+    restart: unless-stopped
+    environment:
+      VIKUNJA_SERVICE_PUBLICURL: ${PUBLIC_URL}
+      VIKUNJA_DATABASE_TYPE: mysql
+      VIKUNJA_DATABASE_HOST: ${MARIADB_HOST}
+      VIKUNJA_DATABASE_PORT: ${MARIADB_PORT}
+      VIKUNJA_DATABASE_DATABASE: ${VIKUNJA_DB}
+      VIKUNJA_DATABASE_USER: ${VIKUNJA_USER}
+      VIKUNJA_DATABASE_PASSWORD: ${VIKUNJA_PASSWORD}
+      TZ: ${TZ}
+    volumes:
+      - ${CONFIG_PATH}/vikunja:/app/vikunja/files
+    networks:
+      - proxy
+      - db_network
+
 networks:
   db_network:
     external: true
     name: db_network
+
+  proxy:
+    external: true
+    name: proxy

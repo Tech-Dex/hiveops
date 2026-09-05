@@ -1,0 +1,24 @@
+# Bot detection / rate limiting. Only consulted when `server.limiter: true`
+# in settings.yml. Reference:
+# https://docs.searxng.org/admin/settings/settings_limiter.html
+# https://github.com/searxng/searxng/blob/master/searx/botdetection/limiter.toml
+
+[real_ip]
+# Number of trusted reverse proxies in front of SearXNG. Nginx Proxy
+# Manager = 1 hop. This tells the limiter which X-Forwarded-For entry is
+# the real client so VPN users are rate-limited individually, not as one.
+x_for = 1
+ipv4_prefix = 32
+ipv6_prefix = 56
+
+[botdetection.ip_limit]
+# link_token adds a hidden-resource challenge. Safe to leave on for a
+# private instance; set false if you see false positives.
+link_token = true
+
+[botdetection.ip_lists]
+# Never rate-limit these (e.g. the VPN subnet, monitoring host).
+pass_ip = [
+  # "10.0.0.0/8",
+]
+block_ip = []

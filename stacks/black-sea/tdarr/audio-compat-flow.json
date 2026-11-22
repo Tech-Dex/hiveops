@@ -119,7 +119,7 @@
       }
     },
     {
-      "name": "Mark first audio default",
+      "name": "Mark first audio default + title",
       "sourceRepo": "Community",
       "pluginName": "ffmpegCommandCustomArguments",
       "version": "1.0.0",
@@ -130,11 +130,11 @@
       },
       "inputsDB": {
         "inputArguments": "",
-        "outputArguments": "-disposition:a:0 default"
+        "outputArguments": "-disposition:a:0 default -metadata:s:a:0 title=EAC3-Compat"
       },
       "fields": {
         "inputArguments": "",
-        "outputArguments": "-disposition:a:0 default"
+        "outputArguments": "-disposition:a:0 default -metadata:s:a:0 title=EAC3-Compat"
       }
     },
     {

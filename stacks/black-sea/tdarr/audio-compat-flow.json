@@ -1,0 +1,232 @@
+{
+  "_id": "audio-compat-eac3",
+  "name": "Audio compat: add EAC3 for DTS/TrueHD",
+  "description": "If a file has DTS/DTS-HD/DTS:X/TrueHD audio, add an EAC3 track (5.1->5.1, 2.0->2.0), put it first and default. Originals kept.",
+  "tags": "",
+  "flowPlugins": [
+    {
+      "name": "Input File",
+      "sourceRepo": "Community",
+      "pluginName": "inputFile",
+      "version": "1.0.0",
+      "id": "inp",
+      "position": {
+        "x": 400,
+        "y": 0
+      },
+      "inputsDB": {},
+      "fields": {}
+    },
+    {
+      "name": "Has DTS / DTS-HD / DTS:X?",
+      "sourceRepo": "Community",
+      "pluginName": "checkAudioCodec",
+      "version": "1.0.0",
+      "id": "dts",
+      "position": {
+        "x": 400,
+        "y": 120
+      },
+      "inputsDB": {
+        "codec": "dts"
+      },
+      "fields": {
+        "codec": "dts"
+      }
+    },
+    {
+      "name": "Has TrueHD?",
+      "sourceRepo": "Community",
+      "pluginName": "checkAudioCodec",
+      "version": "1.0.0",
+      "id": "thd",
+      "position": {
+        "x": 700,
+        "y": 240
+      },
+      "inputsDB": {
+        "codec": "truehd"
+      },
+      "fields": {
+        "codec": "truehd"
+      }
+    },
+    {
+      "name": "Begin Command",
+      "sourceRepo": "Community",
+      "pluginName": "ffmpegCommandStart",
+      "version": "1.0.0",
+      "id": "start",
+      "position": {
+        "x": 400,
+        "y": 360
+      },
+      "inputsDB": {},
+      "fields": {}
+    },
+    {
+      "name": "Ensure EAC3 track",
+      "sourceRepo": "Community",
+      "pluginName": "ffmpegCommandEnsureAudioStream",
+      "version": "1.0.0",
+      "id": "ens",
+      "position": {
+        "x": 400,
+        "y": 480
+      },
+      "inputsDB": {
+        "audioEncoder": "eac3",
+        "language": "",
+        "channels": "6",
+        "enableBitrate": "true",
+        "bitrate": "640k",
+        "enableSamplerate": "false",
+        "samplerate": "48k"
+      },
+      "fields": {
+        "audioEncoder": "eac3",
+        "language": "",
+        "channels": "6",
+        "enableBitrate": "true",
+        "bitrate": "640k",
+        "enableSamplerate": "false",
+        "samplerate": "48k"
+      }
+    },
+    {
+      "name": "Put EAC3 first",
+      "sourceRepo": "Community",
+      "pluginName": "ffmpegCommandRorderStreams",
+      "version": "1.0.0",
+      "id": "ord",
+      "position": {
+        "x": 400,
+        "y": 600
+      },
+      "inputsDB": {
+        "processOrder": "codecs,streamTypes",
+        "languages": "",
+        "channels": "",
+        "codecs": "eac3",
+        "streamTypes": "video,audio,subtitle"
+      },
+      "fields": {
+        "processOrder": "codecs,streamTypes",
+        "languages": "",
+        "channels": "",
+        "codecs": "eac3",
+        "streamTypes": "video,audio,subtitle"
+      }
+    },
+    {
+      "name": "Mark first audio default",
+      "sourceRepo": "Community",
+      "pluginName": "ffmpegCommandCustomArguments",
+      "version": "1.0.0",
+      "id": "def",
+      "position": {
+        "x": 400,
+        "y": 720
+      },
+      "inputsDB": {
+        "inputArguments": "",
+        "outputArguments": "-disposition:a:0 default"
+      },
+      "fields": {
+        "inputArguments": "",
+        "outputArguments": "-disposition:a:0 default"
+      }
+    },
+    {
+      "name": "Execute",
+      "sourceRepo": "Community",
+      "pluginName": "ffmpegCommandExecute",
+      "version": "1.0.0",
+      "id": "exe",
+      "position": {
+        "x": 400,
+        "y": 840
+      },
+      "inputsDB": {},
+      "fields": {}
+    },
+    {
+      "name": "Replace Original File",
+      "sourceRepo": "Community",
+      "pluginName": "replaceOriginalFile",
+      "version": "1.0.0",
+      "id": "rep",
+      "position": {
+        "x": 400,
+        "y": 960
+      },
+      "inputsDB": {},
+      "fields": {}
+    }
+  ],
+  "flowEdges": [
+    {
+      "id": "inp-1-dts",
+      "source": "inp",
+      "sourceHandle": "1",
+      "target": "dts",
+      "targetHandle": null
+    },
+    {
+      "id": "dts-1-start",
+      "source": "dts",
+      "sourceHandle": "1",
+      "target": "start",
+      "targetHandle": null
+    },
+    {
+      "id": "dts-2-thd",
+      "source": "dts",
+      "sourceHandle": "2",
+      "target": "thd",
+      "targetHandle": null
+    },
+    {
+      "id": "thd-1-start",
+      "source": "thd",
+      "sourceHandle": "1",
+      "target": "start",
+      "targetHandle": null
+    },
+    {
+      "id": "start-1-ens",
+      "source": "start",
+      "sourceHandle": "1",
+      "target": "ens",
+      "targetHandle": null
+    },
+    {
+      "id": "ens-1-ord",
+      "source": "ens",
+      "sourceHandle": "1",
+      "target": "ord",
+      "targetHandle": null
+    },
+    {
+      "id": "ord-1-def",
+      "source": "ord",
+      "sourceHandle": "1",
+      "target": "def",
+      "targetHandle": null
+    },
+    {
+      "id": "def-1-exe",
+      "source": "def",
+      "sourceHandle": "1",
+      "target": "exe",
+      "targetHandle": null
+    },
+    {
+      "id": "exe-1-rep",
+      "source": "exe",
+      "sourceHandle": "1",
+      "target": "rep",
+      "targetHandle": null
+    }
+  ]
+}

@@ -390,6 +390,44 @@
     environment:
       RATTATARR_CORS_ALLOWED_ORIGINS: "https://rattatarr.15mp.duckdns.org"
 
+#  ████████╗██████╗  █████╗ ██████╗ ██████╗
+#  ╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗██╔══██╗
+#     ██║   ██║  ██║███████║██████╔╝██████╔╝
+#     ██║   ██║  ██║██╔══██║██╔══██╗██╔══██╗
+#     ██║   ██████╔╝██║  ██║██║  ██║██║  ██║
+#     ╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
+  tdarr:
+    image: ghcr.io/haveagitgat/tdarr:latest
+    container_name: tdarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK_SET=002
+      - serverIP=0.0.0.0
+      - serverPort=8266
+      - webUIPort=8265
+      - internalNode=true
+      - inContainer=true
+      - nodeName=tdarr-node
+    volumes:
+      - ${CONFIG_PATH}/arr/tdarr/server:/app/server
+      - ${CONFIG_PATH}/arr/tdarr/configs:/app/configs
+      - ${CONFIG_PATH}/arr/tdarr/logs:/app/logs
+      - ${CONFIG_PATH}/arr/tdarr/transcode_cache:/temp
+      - ${MEDIA_PATH}/arr/media:/media
+    ports:
+      - "8265:8265"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8265"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+    networks:
+      - black-sea
+      - proxy
+
 networks:
   black-sea:
     external: true
